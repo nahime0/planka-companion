@@ -97,6 +97,21 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'planka' => [
+            'driver' => 'pgsql',
+            'url' => env('PLANKA_DB_URL'),
+            'host' => env('PLANKA_DB_HOST', '127.0.0.1'),
+            'port' => env('PLANKA_DB_PORT', '5432'),
+            'database' => env('PLANKA_DB_DATABASE', 'planka'),
+            'username' => env('PLANKA_DB_USERNAME', 'planka'),
+            'password' => env('PLANKA_DB_PASSWORD', ''),
+            'charset' => env('PLANKA_DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),
