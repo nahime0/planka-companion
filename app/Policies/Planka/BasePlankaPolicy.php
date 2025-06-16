@@ -2,7 +2,7 @@
 
 namespace App\Policies\Planka;
 
-use App\Models\User;
+use App\Models\Planka\AuthenticatableUserAccount;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 abstract class BasePlankaPolicy
@@ -12,7 +12,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(AuthenticatableUserAccount $user): bool
     {
         return true;
     }
@@ -20,7 +20,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, $model): bool
+    public function view(AuthenticatableUserAccount $user, $model): bool
     {
         return true;
     }
@@ -28,7 +28,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(AuthenticatableUserAccount $user): bool
     {
         return false;
     }
@@ -36,7 +36,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, $model): bool
+    public function update(AuthenticatableUserAccount $user, $model): bool
     {
         return false;
     }
@@ -44,7 +44,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, $model): bool
+    public function delete(AuthenticatableUserAccount $user, $model): bool
     {
         return false;
     }
@@ -52,7 +52,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can delete any models.
      */
-    public function deleteAny(User $user): bool
+    public function deleteAny(AuthenticatableUserAccount $user): bool
     {
         return false;
     }
@@ -60,7 +60,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, $model): bool
+    public function restore(AuthenticatableUserAccount $user, $model): bool
     {
         return false;
     }
@@ -68,7 +68,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, $model): bool
+    public function forceDelete(AuthenticatableUserAccount $user, $model): bool
     {
         return false;
     }
@@ -76,7 +76,7 @@ abstract class BasePlankaPolicy
     /**
      * Determine whether the user can permanently delete any models.
      */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(AuthenticatableUserAccount $user): bool
     {
         return false;
     }

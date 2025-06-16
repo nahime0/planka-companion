@@ -11,6 +11,9 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use App\Filament\Planka\Pages\Auth\Login;
+use App\Models\Planka\AuthenticatableUserAccount;
+use App\Http\Middleware\CheckPlankaUserActive;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -26,7 +29,8 @@ class PlankaPanelProvider extends PanelProvider
             ->id('planka')
             ->path('planka')
             ->maxContentWidth('full')
-            ->login()
+            ->login(Login::class)
+            ->authGuard('web')
             ->brandName('Planka Companion')
             ->colors([
                 'primary' => Color::Blue,
@@ -58,6 +62,7 @@ class PlankaPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                CheckPlankaUserActive::class,
             ]);
     }
 }
