@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -165,19 +166,21 @@ class CardResource extends Resource
                     ),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->button()
+                    ->size('xs')
+                    ->color(Color::Green),
                 Tables\Actions\Action::make('open_in_planka')
-                    ->label('Open in Planka')
+                    ->label('Planka')
+                    ->button()
+                    ->size('xs')
+                    ->color(Color::Blue)
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->color('gray')
                     ->url(fn (Card $record) => planka()->cardUrl($record))
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ])
             ->defaultSort('last_activity', 'desc');
     }
