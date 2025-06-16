@@ -3,6 +3,7 @@
 namespace App\Filament\Planka\Widgets;
 
 use App\Models\Planka\Card;
+use App\Filament\Planka\Resources\CardResource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -85,6 +86,14 @@ class RecentCardsWidget extends BaseWidget
                 Tables\Actions\Action::make('view')
                     ->icon('heroicon-m-arrow-top-right-on-square')
                     ->url(fn ($record) => route('filament.planka.resources.cards.view', $record)),
+            ])
+            ->headerActions([
+                Tables\Actions\Action::make('show_all')
+                    ->label('Show All')
+                    ->button()
+                    ->icon('heroicon-o-arrow-right')
+                    ->url(CardResource::getUrl('index'))
+                    ->size('sm'),
             ]);
     }
 }
