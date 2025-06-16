@@ -25,6 +25,7 @@ class PlankaPanelProvider extends PanelProvider
         return $panel
             ->id('planka')
             ->path('planka')
+            ->maxContentWidth('full')
             ->login()
             ->brandName('Planka Companion')
             ->colors([
@@ -43,9 +44,7 @@ class PlankaPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Planka/Widgets'), for: 'App\\Filament\\Planka\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-            ])
+            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
