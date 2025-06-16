@@ -68,9 +68,9 @@ class BoardMembershipsRelationManager extends RelationManager
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle'),
-                Tables\Columns\TextColumn::make('board.lists_count')
+                Tables\Columns\TextColumn::make('lists_count')
                     ->label('Lists')
-                    ->counts('board.lists')
+                    ->state(fn ($record) => $record->board->lists()->count())
                     ->badge()
                     ->color('warning'),
                 Tables\Columns\TextColumn::make('created_at')

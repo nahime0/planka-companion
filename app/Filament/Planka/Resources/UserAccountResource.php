@@ -287,28 +287,28 @@ class UserAccountResource extends Resource
                                     ->color('primary')
                                     ->size('lg')
                                     ->weight(FontWeight::Bold)
-                                    ->numeric(),
+                                    ->state(fn ($record) => $record->projectManagers()->count()),
                                 TextEntry::make('boardMemberships_count')
                                     ->label('Board Memberships')
                                     ->badge()
                                     ->color('info')
                                     ->size('lg')
                                     ->weight(FontWeight::Bold)
-                                    ->numeric(),
+                                    ->state(fn ($record) => $record->boardMemberships()->count()),
                                 TextEntry::make('createdCards_count')
                                     ->label('Cards Created')
                                     ->badge()
                                     ->color('warning')
                                     ->size('lg')
                                     ->weight(FontWeight::Bold)
-                                    ->numeric(),
+                                    ->state(fn ($record) => $record->createdCards()->count()),
                                 TextEntry::make('comments_count')
                                     ->label('Comments')
                                     ->badge()
                                     ->color('success')
                                     ->size('lg')
                                     ->weight(FontWeight::Bold)
-                                    ->numeric(),
+                                    ->state(fn ($record) => $record->comments()->count()),
                             ]),
                     ]),
                 

@@ -44,13 +44,15 @@ class ProjectManagersRelationManager extends RelationManager
                     ->label('Description')
                     ->limit(50)
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('project.background_color')
-                    ->label('Color')
-                    ->badge()
-                    ->color(fn (string $state): string => $state ?? 'gray'),
-                Tables\Columns\TextColumn::make('project.boards_count')
+                Tables\Columns\IconColumn::make('project.is_hidden')
+                    ->label('Visibility')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-eye-slash')
+                    ->falseIcon('heroicon-o-eye')
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('boards_count')
                     ->label('Boards')
-                    ->counts('project.boards')
+                    ->state(fn ($record) => $record->project->boards()->count())
                     ->badge()
                     ->color('primary'),
                 Tables\Columns\TextColumn::make('created_at')
