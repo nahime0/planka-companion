@@ -82,19 +82,22 @@ class CardResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query
+                ->with(['board', 'list', 'labels', 'creatorUser'])
+                ->withMax('comments', 'created_at')
+                ->withMax('actions', 'created_at')
+                ->selectRaw('*, GREATEST(
+                    COALESCE(card.created_at, \'1970-01-01\'),
+                    COALESCE(card.updated_at, \'1970-01-01\'),
+                    COALESCE(card.list_changed_at, \'1970-01-01\'),
+                    COALESCE((select max(created_at) from comment where comment.card_id = card.id), \'1970-01-01\'),
+                    COALESCE((select max(created_at) from action where action.card_id = card.id), \'1970-01-01\')
+                ) as last_activity')
+            )
             ->columns([
-                Tables\Columns\TextColumn::make('board.project.name')
-                    ->label('Project')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('board.name')
-                    ->label('Board')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('list.name')
-                    ->label('List')
-                    ->searchable()
-                    ->sortable(),
+                Tables\Columns\ViewColumn::make('hierarchy')
+                    ->label('Location')
+                    ->view('filament.planka.columns.card-hierarchy'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Card Name')
                     ->searchable()
@@ -125,6 +128,11 @@ class CardResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->color(fn ($state): string => $state && Carbon::parse($state)->isPast() ? 'danger' : 'gray'),
+                Tables\Columns\TextColumn::make('last_activity')
+                    ->label('Last Activity')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -165,7 +173,7 @@ class CardResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('updated_at', 'desc');
+            ->defaultSort('last_activity', 'desc');
     }
 
     public static function getRelations(): array
