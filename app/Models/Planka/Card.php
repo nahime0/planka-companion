@@ -5,6 +5,7 @@ namespace App\Models\Planka;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property int $id
@@ -91,9 +92,14 @@ class Card extends PlankaModel
         return $this->hasMany(CardSubscription::class, 'card_id');
     }
     
-    public function tasks(): HasMany
+    public function tasks(): HasManyThrough
     {
-        return $this->hasMany(Task::class, 'card_id');
+        return $this->hasManyThrough(Task::class, TaskList::class, 'card_id', 'task_list_id');
+    }
+    
+    public function taskLists(): HasMany
+    {
+        return $this->hasMany(TaskList::class, 'card_id');
     }
     
     public function attachments(): HasMany

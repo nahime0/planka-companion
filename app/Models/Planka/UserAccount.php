@@ -150,4 +150,7 @@ class UserAccount extends PlankaModel
     {
         return $this->hasMany(Action::class, 'user_id');
     }
+    
+    // Count attributes for Filament
+    protected $withCount = ['projectManagers', 'boardMemberships', 'createdCards', 'comments'];
 }

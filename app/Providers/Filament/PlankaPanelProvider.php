@@ -26,9 +26,17 @@ class PlankaPanelProvider extends PanelProvider
             ->id('planka')
             ->path('planka')
             ->login()
+            ->brandName('Planka Companion')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
+                'gray' => Color::Gray,
+                'info' => Color::Sky,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
+                'danger' => Color::Rose,
             ])
+            ->font('Inter')
+            ->darkMode(false)
             ->discoverResources(in: app_path('Filament/Planka/Resources'), for: 'App\\Filament\\Planka\\Resources')
             ->discoverPages(in: app_path('Filament/Planka/Pages'), for: 'App\\Filament\\Planka\\Pages')
             ->pages([
