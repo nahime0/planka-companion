@@ -126,4 +126,12 @@ class Card extends PlankaModel
     {
         return $this->hasMany(Notification::class, 'card_id');
     }
+    
+    /**
+     * Get the updated_at attribute, returning created_at if updated_at is null
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        return $value ?: $this->created_at;
+    }
 }
