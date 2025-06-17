@@ -2,6 +2,7 @@
 
 namespace App\Filament\Planka\Widgets;
 
+use App\Filament\Planka\Utilities\CardActions;
 use App\Models\Planka\Card;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -75,9 +76,7 @@ class ExpiringCardsWidget extends BaseWidget
             ->emptyStateDescription('No cards are due in the next 7 days.')
             ->emptyStateIcon('heroicon-o-clock')
             ->actions([
-                Tables\Actions\Action::make('view')
-                    ->icon('heroicon-m-eye')
-                    ->url(fn ($record) => route('filament.planka.resources.cards.view', $record)),
+                CardActions::make(isWidget: true)
             ]);
     }
 }

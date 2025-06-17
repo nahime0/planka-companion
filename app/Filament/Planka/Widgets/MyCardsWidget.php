@@ -2,6 +2,7 @@
 
 namespace App\Filament\Planka\Widgets;
 
+use App\Filament\Planka\Utilities\CardActions;
 use App\Models\Planka\Card;
 use App\Models\Planka\CardMembership;
 use App\Models\Planka\UserAccount;
@@ -86,9 +87,7 @@ class MyCardsWidget extends BaseWidget
             ->emptyStateDescription('You have no cards assigned to you.')
             ->emptyStateIcon('heroicon-o-inbox')
             ->actions([
-                Tables\Actions\Action::make('view')
-                    ->icon('heroicon-m-eye')
-                    ->url(fn ($record) => route('filament.planka.resources.cards.view', $record)),
+                CardActions::make(isWidget: true)
             ]);
     }
 }

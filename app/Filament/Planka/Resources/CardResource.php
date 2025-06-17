@@ -4,6 +4,7 @@ namespace App\Filament\Planka\Resources;
 
 use App\Filament\Planka\Resources\CardResource\Pages;
 use App\Filament\Planka\Resources\CardResource\RelationManagers;
+use App\Filament\Planka\Utilities\CardActions;
 use App\Models\Planka\Card;
 use App\Models\Planka\Board;
 use App\Models\Planka\ListModel;
@@ -12,11 +13,9 @@ use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
 
 class CardResource extends Resource
@@ -166,18 +165,7 @@ class CardResource extends Resource
                     ),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->button()
-                    ->size('xs')
-                    ->color(Color::Green),
-                Tables\Actions\Action::make('open_in_planka')
-                    ->label('Planka')
-                    ->button()
-                    ->size('xs')
-                    ->color(Color::Blue)
-                    ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->url(fn (Card $record) => planka()->cardUrl($record))
-                    ->openUrlInNewTab(),
+                CardActions::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
