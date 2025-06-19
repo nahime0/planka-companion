@@ -181,6 +181,7 @@ class CardResource extends Resource
             RelationManagers\CardMembershipsRelationManager::class,
             RelationManagers\LabelsRelationManager::class,
             RelationManagers\TaskListsRelationManager::class,
+            RelationManagers\NotificationLogsRelationManager::class,
         ];
     }
 

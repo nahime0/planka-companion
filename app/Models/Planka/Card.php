@@ -2,6 +2,7 @@
 
 namespace App\Models\Planka;
 
+use App\Models\NotificationLog;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -133,5 +134,10 @@ class Card extends PlankaModel
     public function getUpdatedAtAttribute($value)
     {
         return $value ?: $this->created_at;
+    }
+    
+    public function notificationLogs(): HasMany
+    {
+        return $this->hasMany(NotificationLog::class, 'card_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\NotificationLog;
 use App\Models\Planka\Card;
 use App\Models\Planka\UserAccount;
 use App\Notifications\PlankaCardNotification;
@@ -49,6 +50,9 @@ class TelegramNotificationService
 
         // Send notifications to each user
         Notification::send($usersToNotify, new PlankaCardNotification($card, $message));
+        
+        // Log each notification
+        $this->logNotifications($card, $usersToNotify, $message);
     }
 
     /**
@@ -129,6 +133,9 @@ class TelegramNotificationService
 
         if ($userInstances->isNotEmpty()) {
             Notification::send($userInstances, new PlankaCardNotification($card, $message));
+            
+            // Log each notification
+            $this->logNotifications($card, $userInstances, $message);
         }
     }
 
@@ -142,5 +149,53 @@ class TelegramNotificationService
     {
         $this->chatId = $chatId;
         return $this;
+    }
+    
+    /**
+     * Log notifications for tracking purposes
+     *
+     * @param Card $card
+     * @param Collection $users
+     * @param string $customMessage
+     * @return void
+     */
+    protected function logNotifications(Card $card, Collection $users, string $customMessage = ''): void
+    {
+        $notificationText = $this->buildNotificationText($card);
+        
+        foreach ($users as $user) {
+            NotificationLog::create([
+                'card_id' => $card->id,
+                'user_id' => $user->id,
+                'notification_text' => $notificationText,
+                'custom_message' => $customMessage ?: null,
+                'channel' => 'telegram',
+            ]);
+        }
+    }
+    
+    /**
+     * Build the notification text for logging
+     *
+     * @param Card $card
+     * @return string
+     */
+    protected function buildNotificationText(Card $card): string
+    {
+        $text = "Card: {$card->name}";
+        
+        if ($card->board) {
+            $text .= "\nBoard: {$card->board->name}";
+        }
+        
+        if ($card->list) {
+            $text .= "\nList: {$card->list->name}";
+        }
+        
+        if ($card->due_date) {
+            $text .= "\nDue Date: " . $card->due_date->format('M d, Y H:i');
+        }
+        
+        return $text;
     }
 }
