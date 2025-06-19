@@ -22,3 +22,11 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+
+# AI Stuff
+.cursor/
+.cursorrules
+CLAUDE.md
+AGENT.md
+AGENTS.md
