@@ -1,6 +1,7 @@
 <?php
 
 use App\Services\PlankaUrlService;
+use App\Services\TelegramNotificationService;
 
 if (!function_exists('planka')) {
     /**
@@ -9,5 +10,15 @@ if (!function_exists('planka')) {
     function planka(): PlankaUrlService
     {
         return app(PlankaUrlService::class);
+    }
+}
+
+if (!function_exists('telegram')) {
+    /**
+     * Get the Telegram notification service instance
+     */
+    function telegram(): TelegramNotificationService
+    {
+        return app(TelegramNotificationService::class);
     }
 }

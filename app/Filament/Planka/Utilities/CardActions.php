@@ -3,6 +3,7 @@
 namespace App\Filament\Planka\Utilities;
 
 use App\Models\Planka\Card;
+use Filament\Notifications\Notification;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
@@ -39,6 +40,32 @@ class CardActions
             ->icon('heroicon-o-arrow-top-right-on-square')
             ->url(fn (Card $record) => planka()->cardUrl($record))
             ->openUrlInNewTab();
+        
+        // Notify via Telegram action
+        $actions[] = Action::make('notify_telegram')
+            ->color(Color::Purple)
+            ->label('Notify')
+            ->icon('heroicon-o-paper-airplane')
+            ->requiresConfirmation()
+            ->modalHeading('Send Telegram Notification')
+            ->modalDescription('This will send a notification about this card to Telegram.')
+            ->modalSubmitActionLabel('Send Notification')
+            ->action(function (Card $record) {
+                try {
+                    telegram()->notifyCard($record, "Card notification requested from Planka Companion");
+                    
+                    Notification::make()
+                        ->title('Telegram notification sent')
+                        ->success()
+                        ->send();
+                } catch (\Exception $e) {
+                    Notification::make()
+                        ->title('Failed to send notification')
+                        ->body($e->getMessage())
+                        ->danger()
+                        ->send();
+                }
+            });
         
         return ActionGroup::make($actions)
             ->button()

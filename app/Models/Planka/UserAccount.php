@@ -4,6 +4,7 @@ namespace App\Models\Planka;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property int $id
@@ -31,6 +32,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class UserAccount extends PlankaModel
 {
+    use Notifiable;
+    
     protected $table = 'user_account';
     
     protected $fillable = [
@@ -153,4 +156,14 @@ class UserAccount extends PlankaModel
     
     // Count attributes for Filament
     protected $withCount = ['projectManagers', 'boardMemberships', 'createdCards', 'comments'];
+    
+    /**
+     * Route notifications for the Telegram channel.
+     *
+     * @return string|null
+     */
+    public function routeNotificationForTelegram(): ?string
+    {
+        return config('services.telegram.chat_id');
+    }
 }

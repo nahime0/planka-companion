@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\PlankaUrlService;
+use App\Services\TelegramNotificationService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
             return new PlankaUrlService(
                 config('planka')
             );
+        });
+
+        $this->app->singleton(TelegramNotificationService::class, function ($app) {
+            return new TelegramNotificationService();
         });
     }
 
