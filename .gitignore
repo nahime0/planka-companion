@@ -23,6 +23,8 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 
+# Visual Studio Code
+.devdbrc
 
 # AI Stuff
 .cursor/
