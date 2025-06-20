@@ -126,10 +126,10 @@ class NotifyExpiringCards extends Command
             
             if (!$existingNotificationToday) {
                 try {
-                    $daysOverdue = ceil($card->due_date->diffInDays($now));
+                    $daysOverdue = floor($card->due_date->diffInDays($now));
                     
                     if ($daysOverdue == 0) {
-                        $hoursOverdue = ceil($card->due_date->diffInHours($now));
+                        $hoursOverdue = floor($card->due_date->diffInHours($now));
                         $message = "🚨 This card has expired! It's {$hoursOverdue} hour(s) overdue.";
                     } elseif ($daysOverdue == 1) {
                         $message = "🚨 This card has expired! It's 1 day overdue.";
