@@ -1,61 +1,173 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Planka Companion
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> **DISCLAIMER**: This project is currently in active development and is **NOT** suitable for production use. Features may be incomplete, APIs may change, and bugs may exist. Use at your own risk.
 
-## About Laravel
+A Laravel-based companion application for [Planka](https://github.com/plankanban/planka) that extends its functionality with advanced features like expiration notifications, enhanced card management, and Telegram integration.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Why Planka Companion?
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+While Planka is an excellent open-source project management tool, it lacks some essential features for teams that need:
+- **Expiration Notifications**: Get notified before cards expire
+- **External Notifications**: Telegram integration for real-time updates
+- **Advanced Card Management**: Better visibility of expiring and overdue cards
+- **Notification History**: Track all notifications sent for audit purposes
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Planka Companion fills these gaps without modifying Planka's core database, ensuring compatibility and easy updates.
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Card Expiration Management
+- **30-minute warnings** before card due dates
+- **Daily reminders** for overdue cards (sent after 10 AM)
+- **Smart notification system** that prevents duplicate alerts
+- **Visual indicators** for overdue cards in the interface
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Telegram Integration
+- Send notifications to card creators and subscribers
+- Customizable notification messages
+- Support for multiple notification scenarios
+- Full notification history tracking
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Enhanced Card Views
+- **Hierarchical display**: Project → Board → List → Card
+- **Recently updated cards widget** on dashboard
+- **Advanced filtering** by board, list, due date, and overdue status
+- **Card statistics** at a glance (comments, attachments, members, tasks)
 
-## Laravel Sponsors
+### Notification Tracking
+- Complete history of all notifications sent
+- View notification logs per card
+- Track who was notified and when
+- Prevent notification fatigue with intelligent deduplication
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Requirements
 
-### Premium Partners
+- PHP 8.2 or higher
+- PostgreSQL (for Planka database connection)
+- SQLite or MySQL/PostgreSQL (for companion app data)
+- Composer
+- A running Planka instance
+- Telegram Bot Token (for notifications)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/nahime/planka-companion.git
+   cd planka-companion
+   ```
+
+2. **Install dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Configure environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Set up database connections**
+   
+   Edit `.env` and configure your Planka database connection:
+   ```env
+   # Planka Database Connection
+   PLANKA_DB_HOST=your-planka-host
+   PLANKA_DB_PORT=5432
+   PLANKA_DB_DATABASE=planka
+   PLANKA_DB_USERNAME=planka
+   PLANKA_DB_PASSWORD=your-password
+   ```
+
+5. **Configure Telegram (optional)**
+   ```env
+   TELEGRAM_BOT_TOKEN=your-bot-token
+   TELEGRAM_CHAT_ID=your-chat-id
+   ```
+
+6. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+7. **Start the application**
+   ```bash
+   php artisan serve
+   ```
+
+8. **Set up the scheduler**
+   
+   Add this cron entry to run Laravel's scheduler:
+   ```bash
+   * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+   ```
+
+## Usage
+
+### Accessing the Dashboard
+
+Navigate to `http://localhost:8000/admin` and log in using your Planka credentials.
+
+### Viewing Cards
+
+The dashboard shows recently updated cards. You can:
+- Click on any card to view details
+- See notification history for each card
+- Filter cards by various criteria
+- Access cards directly in Planka
+
+### Notifications
+
+Notifications are sent automatically based on the schedule:
+- **Expiring cards**: Checked every minute, notified 30 minutes before due date
+- **Expired cards**: Daily notifications sent after 10 AM
+
+### Manual Notification Command
+
+You can also run notifications manually:
+```bash
+php artisan cards:notify-expiring
+```
+
+## Architecture
+
+Planka Companion follows a **read-only** approach to Planka's database:
+- Never modifies Planka tables directly
+- Maintains its own database for companion-specific data
+- Uses separate database connections for clean separation
+
+## Development
+
+### Code Style
+```bash
+composer lint      # Run PHP linter
+composer typecheck # Run static analysis
+composer test      # Run tests
+```
+
+### Project Guidelines
+
+## Important Notes
+
+**Never modify Planka database tables directly** - This is a core principle of Planka Companion
+
+**Telegram Notifications** - Currently, all users share the same Telegram chat ID. Individual user chat IDs will be supported in future versions.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open source and available under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+- [Planka](https://github.com/plankanban/planka) - The amazing project management tool this companion extends
+- [Laravel](https://laravel.com) - The PHP framework
+- [Filament](https://filamentphp.com) - The admin panel builder
+
+## Support
+
+If you find this project helpful, please give it a ⭐ on GitHub!

@@ -1,9 +1,14 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "nahime0/planka-companion",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Planka Companion is a companion app for Planka, a task management tool.",
+    "keywords": [
+        "planka",
+        "companion",
+        "telegram",
+        "bot"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
